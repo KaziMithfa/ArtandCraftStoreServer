@@ -69,6 +69,32 @@ async function run() {
       res.send(result);
     });
 
+    // here we are updating the data
+
+    app.put("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+
+      const updatedCrafts = req.body;
+
+      const artcrafts = {
+        $set: {
+          url: updatedCrafts.url,
+          subcategoryName: updatedCrafts.subcategoryName,
+          shortDescription: updatedCrafts.shortDescription,
+          customaization: updatedCrafts.customaization,
+          price: updatedCrafts.price,
+          rating: updatedCrafts.rating,
+          time: updatedCrafts.time,
+          stockStatus: updatedCrafts.stockStatus,
+        },
+      };
+
+      const result = await itemsCollection.updateOne(query, artcrafts, options);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
