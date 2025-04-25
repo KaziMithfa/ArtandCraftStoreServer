@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -56,6 +56,16 @@ async function run() {
       const result = await itemsCollection
         .find({ email: req.params.email })
         .toArray();
+      res.send(result);
+    });
+
+    // here we are getting the data for updating the content of a specfic element
+
+    app.get("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await itemsCollection.findOne(query);
+
       res.send(result);
     });
 
