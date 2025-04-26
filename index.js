@@ -48,7 +48,14 @@ async function run() {
       res.send(result);
     });
 
-    // here we are getting the data for all the items
+    // here we are getting the data for all the items by all users
+
+    app.get("/items", async (req, res) => {
+      const result = await itemsCollection.find().toArray();
+      res.send(result);
+    });
+
+    // here we are getting the data for all the items added by a specific user
 
     app.get("/myItems/:email", async (req, res) => {
       //console.log(req.params.email);
